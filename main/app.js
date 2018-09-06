@@ -8,7 +8,7 @@ const router     = express.Router();
 const socket 	 = require('socket.io');
 var path = require('path');
 
-var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
+var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -18,7 +18,7 @@ console.log("router"+router);
 require('./routes')(router);
 app.use('/api/v1', router);
 app.use(express.static('public'));
-var server=app.listen("https://flashmobapp.herokuapp.com/");
+var server=app.listen(ip);
 
 var io=socket(server);
 
