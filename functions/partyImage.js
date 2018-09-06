@@ -1,6 +1,6 @@
 'use strict';
 
-const partyImage = require('../models/partyImage');
+const partyImage = require('../models/partyimage');
 const bcrypt = require('bcryptjs');
 
 exports.uploadPartyImage = (pid,img,name,caption) =>
