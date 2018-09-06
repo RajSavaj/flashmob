@@ -18,7 +18,7 @@ console.log("router"+router);
 require('./routes')(router);
 app.use('/api/v1', router);
 app.use(express.static('public'));
-var server=app.listen(ip);
+var server=app.listen(port,ip);
 
 var io=socket(server);
 
