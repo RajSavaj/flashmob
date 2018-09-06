@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Raj Savaj</title>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+<body>
+<h1>Raj Savaj</h1>
+
+<div id="chat-window">
+	<div id="output"></div>
+</div>
+<div>
+	<input type="text" name="name" id="name" placeholder="Name"><br><br>
+	<textarea name="msg" id="msg" placeholder="Message"></textarea><br>
+	<button id="send">Send</button>
+</div>
+<script type="text/javascript">
+	 var socket = io.connect('http://'+window.location.hostname+':8080');
+	 $("#send").click(function(){
+	 	alert($("#name").val());
+	 	 socket.emit('chat', {
+               username:$("#name").val(),
+               message:$("#msg").val(),
+               uniqueId:"12245"
+          });
+	 });
+
+	 socket.on("chat",function(data){
+	 	$("#output").html($("#output").html()+"<b>"+data.username+"</b> :- "+data.message+"<br><br>");
+	 });
+</script>
+</body>
+</html>

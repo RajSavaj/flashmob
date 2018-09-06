@@ -1,0 +1,8 @@
+{ 
+        "name"      : "Raj Savaj",
+        "email"     : "rsavaj7@gmail.com",
+        "password"  : "Savaj@123",
+        "secret"    : "Savaj@123",
+        "mongourl"  : "mongodb://rajsavaj:savaj123@ds121382.mlab.com:21382/flashmob"
+
+ }

@@ -1,0 +1,42 @@
+{
+  "name": "flashmobparty-app-nodejs",
+  "version": "1.0.0",
+  "description": "Flashmob party",
+  "main": "main/app.js",
+  "dependencies": {
+    "basic-auth": "^2.0.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.3.0",
+    "mongodb": "^2.2.33",
+    "mongoose": "^5.2.7",
+    "mongos": "0.0.0",
+    "morgan": "^1.9.0",
+    "multer": "^1.2.0",
+    "node-datetime": "^2.1.0",
+    "nodemailer": "^4.6.7",
+    "randomstring": "^1.1.5",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  },
+  "scripts": {
+    "start": "node main/app.js"
+  },
+  "engine": {
+    "node": "*",
+    "npm": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shocky698/flashmobparty-app-nodejs"
+  },
+  "author": "Viraj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shocky698/flashmobparty-app-nodejs/issues"
+  },
+  "homepage": "https://github.com/shocky698/flashmobparty-app-nodejs#readme"
+}
