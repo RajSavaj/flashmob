@@ -65,14 +65,8 @@ exports.resetPasswordInit = email =>
 		})
 
 		.then(user => {
-			var transporter = nodemailer.createTransport({
-							    service: 'Gmail',
-							    auth: {
-							        user: ${config.email},
-							        pass: ${config.password}
-							    }
-							});
-            //const transporter = nodemailer.createTransport(`smtps://${config.email}:${config.password}@smtp.gmail.com`);
+			
+            const transporter = nodemailer.createTransport(`smtps://${config.email}:${config.password}@smtp.gmail.com`);
 
             const mailOptions = {
                 from: `"${config.name}" <${config.email}>`,
