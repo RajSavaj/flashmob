@@ -64,7 +64,7 @@ exports.resetPasswordInit = email =>
 			}
 		})
 
-		.then(user => {
+		.then(u => {
             var transporter = nodemailer.createTransport({
 			    host: 'smtp.gmail.com',
 			    port: 465,
