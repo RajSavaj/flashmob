@@ -65,13 +65,13 @@ exports.resetPasswordInit = email =>
 		})
 
 		.then(user => {
-            const transporter = nodemailer.createTransport({
+            var transporter = nodemailer.createTransport({
 			    host: 'smtp.gmail.com',
 			    port: 465,
 			    secure: true,
 			    auth: {
-			        user: ${config.email}, // Your email id
-			        pass: ${config.password} // Your password
+			        user: 'rsavaj7@gmail.com', // Your email id
+			        pass: 'Savaj@123' // Your password
 			    },
 			    tls: {
 			        // do not fail on invalid certs
