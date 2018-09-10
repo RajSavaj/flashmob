@@ -12,7 +12,7 @@ const partySchema = mongoose.Schema({
     email           : String,
     pname 			: String,
     ptime			: String,
-    pdate 			: String,
+    pdate 			: Date,
     location 		: String,
     flag            : Number,
     pepole 			: Number,

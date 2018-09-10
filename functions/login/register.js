@@ -33,7 +33,8 @@ exports.registerUser = (name, email, password, age, city,image ) =>
                                 reject({ status: 200, message: 'User Already Registered !' });
 
                             } else {
-                                reject({ status: 500, message: 'Internal Server Error !'+err.message });
+                                console.log(err.message);
+                                reject({ status: 200, message: 'Internal Server Error !'+err.message });
                             }
                         });
 

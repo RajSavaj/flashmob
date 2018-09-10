@@ -44,9 +44,10 @@ module.exports = router => {
 	router.get('/', (req, res) => res.end('Team Echo flashmob party node server.'));
 
 	router.post('/Test',(req,res)=>{
-        party.party("rsavaj7@gmail.com","Raj","12","15","Amreli",1,15)
+        const pid=req.body.pid;
+        music.test(pid)
             .then(result => {
-                res.status(result.status).json({ message: result.message })
+                res.status(result.status).json( result.message )
             })
             .catch(err => res.status(err.status).json({ message: err.message }));
 	});
@@ -192,14 +193,14 @@ module.exports = router => {
         const leti=req.body.let;
         const lang=req.body.lang;
         const city=req.body.city;
-        if (!email || !pname || !ptime || !pdate || !location || !flag || !pepole || !leti || !city) {
-
+        const uid=req.body.uid;
+        if (!email || !pname || !ptime || !pdate || !location || !flag || !pepole || !leti || !city || !uid) {
             res.status(400).json({ message: 'Invalid Request !' });
 
         } else {
-            party.party(cname,email, pname, ptime, pdate, location, flag, pepole,leti,lang,city)
+            party.party(cname,email, pname, ptime, pdate, location, flag, pepole,leti,lang,city,uid)
                 .then(result => {
-                    res.status(result.status).json({message: result.message})
+                    res.status(result.status).json(result.message)
                 })
                 .catch(err => res.status(err.status).json({message: err.message}));
         }
@@ -503,6 +504,74 @@ module.exports = router => {
             res.status(400).json({ message: 'Invalid Request !' });
         } else {
             musiclike.countLike(pid,mid)
+                .then(result => {
+                    res.status(result.status).json(result.message)
+                })
+                .catch(err => res.status(err.status).json({message: err.message}));
+        }
+    });
+
+     router.post('/removemusic',(req,res)=>{
+        const mid  = req.body.mid;
+
+        if (!mid) {
+            res.status(400).json({ message: 'Invalid Request !' });
+        } else {
+            music.removeMusic(mid)
+                .then(result => {
+                    res.status(result.status).json(result.message)
+                })
+                .catch(err => res.status(err.status).json({message: err.message}));
+        }
+    });
+
+     router.post('/removeParticipate',(req,res)=>{
+        const pid  = req.body.pid;
+        const uid  = req.body.uid;
+        if (!pid || !uid) {
+            res.status(400).json({ message: 'Invalid Request !' });
+        } else {
+            party.removeUserParty(pid,uid)
+                .then(result => {
+                    res.status(result.status).json(result.message)
+                })
+                .catch(err => res.status(err.status).json({message: err.message}));
+        }
+    });
+
+    router.post('/getuserparty',(req,res)=>{
+        const uid  = req.body.uid;
+        if (!uid) {
+            res.status(400).json({ message: 'Invalid Request !' });
+        } else {
+            party.getuserparty(uid)
+                .then(result => {
+                    res.status(result.status).json(result.message)
+                })
+                .catch(err => res.status(err.status).json({message: err.message}));
+        }
+    });
+    router.post('/imageComment',(req,res)=>{
+        const img_id=req.body.img_id
+        const comment  = req.body.comment;
+        const user  = req.body.user;
+        if (!img_id || !comment || !user ) {
+            res.status(400).json({ message: 'Invalid Request !' });
+        } else {
+             pimg.imageComment(img_id,comment,user)
+                .then(result => {
+                    res.status(result.status).json(result.message)
+                })
+                .catch(err => res.status(err.status).json({message: err.message}));
+        }
+    });
+
+    router.post('/getImageComment',(req,res)=>{
+        const img_id  = req.body.img_id;
+        if (!img_id) {
+            res.status(400).json({ message: 'Invalid Request !' });
+        } else {
+            pimg.imageCommentGet(img_id)
                 .then(result => {
                     res.status(result.status).json(result.message)
                 })

@@ -12,7 +12,9 @@ const partyMusic = mongoose.Schema({
     music           : String,
     name 			: String,
     mtime		    : String,
-	uid 			: String    
+	uid 			: String,
+	like            : Number,
+	dislike         : Number,   
 });
 mongoose.Promise = global.Promise;
 

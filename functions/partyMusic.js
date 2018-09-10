@@ -1,8 +1,9 @@
 'use strict';
 
 const partyMusic = require('../models/music');
-const bcrypt = require('bcryptjs');
 
+const bcrypt = require('bcryptjs');
+var ObjectID = require('mongodb').ObjectID;
 exports.uploadPartyMusic = (pid,music,name,uid) =>
     new Promise((resolve,reject) => {
         const pmusic = new partyMusic({
@@ -10,6 +11,8 @@ exports.uploadPartyMusic = (pid,music,name,uid) =>
                 music    : music,
                 name     : name,
                 uid      : uid,
+                like     : 0,
+                dislike  : 0,
                 mtime    : new Date()
             });
             pmusic.save()
@@ -31,3 +34,9 @@ exports.getMusicById=(pid,uid) =>
     });  
 });
 
+exports.removeMusic=(mid) =>
+    new Promise((resolve,reject) =>{
+         partyMusic.findOneAndRemove({_id:ObjectID(mid)}, function (err, musics) {
+            resolve({ status: 200, message: musics });
+        });  
+});
