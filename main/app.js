@@ -27,19 +27,37 @@ const stepcount=require('../functions/stepcount');
 var d=new Date();
 io.on('connection',function(socket){
 	console.log("made socket connection");
+
+ 	var addedUser = false;
+	var connectedUsers = 0;
+	
 	socket.on('chat',function(data){
 		data.time=d.toString();
-		io.sockets.emit('chat',data);
+		io.emit('chat',data);
 		chat.sendmsg(data.username,data.uniqueId,data.message,data.partyid);
 	});
 
 	socket.on('user',function(data){
-		io.sockets.emit('user',data);
+		socket.username = data;
+		console.log(data);
+		stepcount.attemptparty(data.pid,data.uid);
+		io.emit('user',data);
 	});
 
 	socket.on('count',function(data){
 		stepcount.stepsend(data.pid,data.uid,data.count);
 		io.sockets.emit('count',data);
 	});
+
+	socket.on('PlaySong',function(data){
+		console.log(data);
+		io.sockets.emit('PlaySong',data);
+	});
+	
+	socket.on('PlayPause',function(data){
+		console.log(data);
+		io.sockets.emit('PlayPause',data);
+	});
+
 });
 console.log(`flashmob App is Running on ${port} ${ip} `);

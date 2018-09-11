@@ -10,6 +10,7 @@ var mongoURL = process.env.MONGOLAB_URI || config.mongourl;
 const partyJoin = mongoose.Schema({
     pid             : String,
     uid           	: String,
+    status			: Number,
     created_at		: String    
 });
 mongoose.Promise = global.Promise;
