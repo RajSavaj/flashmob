@@ -220,6 +220,20 @@ module.exports = router => {
             .catch(err => res.status(err.status).json({message: err.message}));
     });
 
+    router.get('/getPartydate',(req,res)=>{
+        const date=req.body.date;
+        if (!date) {
+             res.status(400).json({ message: 'Invalid Request !' });
+        }else 
+        {
+            party.getparty()
+                .then(result => {
+                    res.status(result.status).json(result.message)
+                })
+                .catch(err => res.status(err.status).json({message: err.message}));
+        }
+    });
+
      router.post('/searchparty',(req,res)=>{
         const city=req.body.city;
         const date=req.body.date;

@@ -50,6 +50,12 @@ exports.searchparty=(city,date)=>new Promise((resolve,reject)=>{
     });
 })
 
+exports.getallpartydate=(pdate)=>new Promise((resolve,reject)=>{
+    party.find({pdate:date}, function (err, parties) {
+        resolve({ status: 200, message: parties });
+    }); 
+})
+
 exports.requestParty=(pid,uid)=>new Promise((resolve,reject)=>{
     joinparty.find({pid:pid,uid:uid}).then(req=>{
         if(req.length==0){
