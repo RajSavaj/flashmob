@@ -82,7 +82,7 @@ exports.resetPasswordInit = email =>
                 from: `"${config.name}" <${config.email}>`,
                 to: email,
                 subject: 'Reset Password Request ',
-                html: `Hello ${user.name},
+                html: `Hello ${u.name},
 
     			     Your reset password token is <b>${random}</b>.  
     			The token is valid for only 2 minutes.

@@ -28,7 +28,7 @@ new Promise((resolve,reject) =>{
 	    	  			pm.dislike=pm.dislike+1;
 	    	  		}
 	    	  		pm.save();
-	    	  		resolve({ status: 200, message:{d,data}});
+	    	  		resolve({ status: 200, message:{data}});
 	    	  	});
 			});
     	  }
@@ -50,11 +50,13 @@ new Promise((resolve,reject) =>{
 		    	  			pm.like=pm.like-1;
 		    	  		}
 		    	  		pm.save();
-		    	  		resolve({ status: 200, message:100});
+		    	  		resolve({ status: 200, message:pm});
 		    	  	});
 				});
 				
-    	  	}else{
+    	  	}
+    	  	else
+    	  	{
     	  		resolve({ status: 200, message:0});
     	  	}
     	  }
