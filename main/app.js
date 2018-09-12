@@ -45,7 +45,7 @@ io.on('connection',function(socket){
 	});
 
 	socket.on('count',function(data){
-		stepcount.stepsend(data.pid,data.uid,data.count);
+		stepcount.stepsend(data.pid,data.uid,data.name,data.count);
 		io.sockets.emit('count',data);
 	});
 

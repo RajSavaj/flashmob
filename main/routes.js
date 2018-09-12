@@ -13,6 +13,7 @@ const chat=require('../functions/partychat');
 const pimg=require('../functions/partyImage');
 const music=require('../functions/partyMusic');
 const musiclike=require('../functions/musiclike');
+const stepcount=require('../functions/stepcount');
 const multer = require('multer');
 
 var Storage = multer.diskStorage({
@@ -41,33 +42,33 @@ var MusicUpload = multer({ storage: MusicStorage }).single("music");
 
 module.exports = router => {
 
-	router.get('/', (req, res) => res.end('Team Echo flashmob party node server.'));
+    router.get('/', (req, res) => res.end('Team Echo flashmob party node server.'));
 
-	router.post('/Test',(req,res)=>{
+    router.post('/Test',(req,res)=>{
         const pid=req.body.pid;
         music.test(pid)
             .then(result => {
                 res.status(result.status).json( result.message )
             })
             .catch(err => res.status(err.status).json({ message: err.message }));
-	});
+    });
 
-	router.post('/authenticate', (req, res) => {
+    router.post('/authenticate', (req, res) => {
         const email = req.body.email;
         const password = req.body.pass;
-		if (!email || !password) {
-			res.status(200).json({ message: 'Invalid Request !' });
-		} else {
-			login.loginUser(email, password)
-			.then(result => {
-				const token = jwt.sign(result, config.secret, { expiresIn: 1440 });
+        if (!email || !password) {
+            res.status(200).json({ message: 'Invalid Request !' });
+        } else {
+            login.loginUser(email, password)
+            .then(result => {
+                const token = jwt.sign(result, config.secret, { expiresIn: 1440 });
                 res.status(200).json({ message: result.message, token: token });
-			})
-			.catch(err => res.status(err.status).json({ message: err.message }));
-		}
-	});
+            })
+            .catch(err => res.status(err.status).json({ message: err.message }));
+        }
+    });
 
-	router.post('/users', (req, res) => {
+    router.post('/users', (req, res) => {
         upload(req, res, function (err) {
             if (err) {
                 return res.end("Something went wrong!"+err.message);
@@ -78,13 +79,18 @@ module.exports = router => {
             const age = req.body.age;
             const city = req.body.city;
             const i=req.files;
+            var filename="";
+             console.log(i);
+            if(i.length!=0){
+                filename=i[0].filename;
+            }
 
             if (!name || !email || !password || !age || !city || !name.trim() || !email.trim() || !password.trim() || !age.trim()|| !city.trim()) {
                 console.log(req.body);
                 res.status(400).json({message: 'Invalid Request !'});
 
             } else {
-                register.registerUser(name, email, password, age, city,i[0].filename)
+                register.registerUser(name, email, password, age, city,filename)
 
                     .then(result => {
                         res.setHeader('Location', '/users/'+email);
@@ -93,7 +99,7 @@ module.exports = router => {
                     .catch(err => res.status(err.status).json({ message: err.message }));
             }
         });
-	});
+    });
 
     router.post('/updateuser', (req, res) => {
         upload(req, res, function (err) {
@@ -125,7 +131,7 @@ module.exports = router => {
         });
     });
 
-	router.get('/users/:id', (req,res) => {
+    router.get('/users/:id', (req,res) => {
         const id =req.params.id;
         profile.getProfile(req.params.id)
 
@@ -134,53 +140,53 @@ module.exports = router => {
                 .catch(err => res.status(err.status).json({ message: err.message }));
         });
 
-	router.put('/users/:id', (req,res) => {
+    router.put('/users/:id', (req,res) => {
 
-		if (checkToken(req)) {
+        if (checkToken(req)) {
 
-			const oldPassword = req.body.password;
-			const newPassword = req.body.newPassword;
+            const oldPassword = req.body.password;
+            const newPassword = req.body.newPassword;
 
-			if (!oldPassword || !newPassword || !oldPassword.trim() || !newPassword.trim()) {
+            if (!oldPassword || !newPassword || !oldPassword.trim() || !newPassword.trim()) {
 
-				res.status(400).json({ message: 'Invalid Request !' });
+                res.status(400).json({ message: 'Invalid Request !' });
 
-			} else {
+            } else {
 
-				password.changePassword(req.params.id, oldPassword, newPassword)
+                password.changePassword(req.params.id, oldPassword, newPassword)
 
-				.then(result => res.status(result.status).json({ message: result.message }))
+                .then(result => res.status(result.status).json({ message: result.message }))
 
-				.catch(err => res.status(err.status).json({ message: err.message }));
+                .catch(err => res.status(err.status).json({ message: err.message }));
 
-			}
-		} else {
+            }
+        } else {
 
-			res.status(401).json({ message: 'Invalid Token !' });
-		}
-	});
+            res.status(401).json({ message: 'Invalid Token !' });
+        }
+    });
 
-	router.post('/users/:id/password', (req,res) => {
+    router.post('/users/:id/password', (req,res) => {
 
-		const email = req.params.id;
-		const token = req.body.token;
-		const newPassword = req.body.password;
+        const email = req.params.id;
+        const token = req.body.token;
+        const newPassword = req.body.password;
 
-		if (!token || !newPassword || !token.trim() || !newPassword.trim()) {
-			password.resetPasswordInit(email)
-			.then(result => res.status(result.status).json({ message: result.message }))
+        if (!token || !newPassword || !token.trim() || !newPassword.trim()) {
+            password.resetPasswordInit(email)
+            .then(result => res.status(result.status).json({ message: result.message }))
 
-			.catch(err => res.status(err.status).json({ message: err.message }));
+            .catch(err => res.status(err.status).json({ message: err.message }));
 
-		} else {
-			password.resetPasswordFinish(email, token, newPassword)
-			.then(result => res.status(result.status).json({ message: result.message }))
+        } else {
+            password.resetPasswordFinish(email, token, newPassword)
+            .then(result => res.status(result.status).json({ message: result.message }))
 
-			.catch(err => res.status(err.status).json({ message: err.message }));
-		}
-	});
+            .catch(err => res.status(err.status).json({ message: err.message }));
+        }
+    });
 
-	//Party Create
+    //Party Create
     router.post('/party',(req,res)=>{
         const cname  = req.body.cname;
         const email = req.body.email;
@@ -255,6 +261,19 @@ module.exports = router => {
         }
     });
 
+    router.post('/partyUserAttend',(req,res)=>{
+        const pid=req.body.pid;
+        if (!pid) {
+             res.status(400).json({ message: 'Invalid Request !' });
+        } else {
+            party.partyUserAttend(pid)
+                .then(result => {
+                    res.status(result.status).json(result.message)
+                })
+                .catch(err => res.status(err.status).json({message: err.message}));
+        }
+    });
+
      router.post('/partyUserList',(req,res)=>{
         const pid=req.body.pid;
         if (!pid) {
@@ -267,6 +286,20 @@ module.exports = router => {
                 .catch(err => res.status(err.status).json({message: err.message}));
         }
     });
+
+     router.post('/userStepCount',(req,res)=>{
+        const pid=req.body.pid;
+        if (!pid) {
+             res.status(400).json({ message: 'Invalid Request !' });
+        } else {
+            stepcount.stepcountparty(pid)
+                .then(result => {
+                    res.status(result.status).json(result.message)
+                })
+                .catch(err => res.status(err.status).json({message: err.message}));
+        }
+    });
+
 
     router.post('/getProfile',(req,res)=>{
         const sid = req.body.sid;
@@ -436,7 +469,6 @@ module.exports = router => {
 
     router.post('/getMusic',(req,res)=>{
         const pid = req.body.pid;
-
         if (!pid) {
             res.status(400).json({ message: 'Invalid Request !' });
         } else {
@@ -579,22 +611,22 @@ module.exports = router => {
         }
     });
 
-	function checkToken(req) {
-		const token = req.headers['x-access-token'];
+    function checkToken(req) {
+        const token = req.headers['x-access-token'];
 
-		if (token) {
+        if (token) {
 
-			try {
+            try {
 
-  				var decoded = jwt.verify(token, config.secret);
-  				return decoded.message === req.params.id;
+                var decoded = jwt.verify(token, config.secret);
+                return decoded.message === req.params.id;
 
-			} catch(err) {
-				return false;
-			}
+            } catch(err) {
+                return false;
+            }
 
-		} else {
-			return false;
-		}
-	}
+        } else {
+            return false;
+        }
+    }
 }

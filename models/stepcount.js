@@ -8,7 +8,8 @@ var mongoURL = process.env.MONGOLAB_URI || config.mongourl;
 
 const stepcount = mongoose.Schema({
     pid             : String,
-    uid           	: String,
+    uid 			: String,
+    name           	: String,
     count 			: Number,
     mtime		    : String 
 });

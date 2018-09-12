@@ -37,10 +37,9 @@ exports.party=(name,email,pname, ptime, pdate, location, flag,pepole,lati,lang,c
         });
 });
 exports.getparty=()=>new Promise((resolve,reject)=>{
-
     var dt = dateTime.create();
-    var date =dt.format('d/m/Y');
-    party.find({"pdate": {"$gte": date}}, function (err, parties) {
+    var datec = dt.format('m/d/Y');
+    party.find({"pdate": {"$gte": datec}}, function (err, parties) {
         resolve({ status: 200, message: parties });
     }); 
 })
@@ -86,6 +85,22 @@ exports.userByPartyList=(uid)=>new Promise((resolve,reject)=>{
     });
 })
 
+exports.partyUserAttend=(pid)=>new Promise((resolve,reject)=>{
+    joinparty.find({pid:pid,status:1},'-_id uid').then(req=>{
+        var uid=[];
+        if(req.length!=0){
+            for(var i=0;i<req.length;i++){
+                uid.push(ObjectID(req[i].uid));
+            }   
+            user.find({"_id":uid}, function (err, users) {
+                resolve({ status: 200, message: users });
+            }); 
+        }else{
+            resolve({ status: 200, message:[]});
+        }
+    });
+})
+
 exports.partyUserList=(pid)=>new Promise((resolve,reject)=>{
     joinparty.find({pid:pid},'-_id uid').then(req=>{
         var uid=[];
@@ -101,11 +116,14 @@ exports.partyUserList=(pid)=>new Promise((resolve,reject)=>{
         }
     });
 })
+
 exports.removeUserParty=(pid,uid)=>new Promise((resolve,reject)=>{
     joinparty.findOneAndRemove({pid:pid,uid:uid}, function (err, musics) {
             resolve({ status: 200, message: musics });
     });  
 })
+
+
 
 exports.getuserparty=(uid)=>new Promise((resolve,reject)=>{
     joinparty.find({uid:uid},'-_id pid').then(req=>{
