@@ -583,6 +583,20 @@ module.exports = router => {
                 .catch(err => res.status(err.status).json({message: err.message}));
         }
     });
+
+    router.post('/closeparty',(req,res)=>{
+        const pid  = req.body.pid;
+        if (!pid) {
+            res.status(400).json({ message: 'Invalid Request !' });
+        } else {
+            party.closeparty(pid)
+                .then(result => {
+                    res.status(result.status).json(result.message)
+                })
+                .catch(err => res.status(err.status).json({message: err.message}));
+        }
+    });
+
     router.post('/imageComment',(req,res)=>{
         const img_id=req.body.img_id
         const comment  = req.body.comment;

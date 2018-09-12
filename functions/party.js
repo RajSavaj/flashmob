@@ -136,3 +136,14 @@ exports.getuserparty=(uid)=>new Promise((resolve,reject)=>{
         });
     }); 
 })
+
+exports.closeparty=(pid)=>new Promise((resolve,reject)=>{
+    party.find({_id:ObjectID(pid)}).then(data=>{
+        let party=data[0];
+        var d = new Date();
+        d.setDate(d.getDate()-3);
+        party.pdate=d;
+        party.save();
+        resolve({ status: 200, message: 0 });
+    });
+})
