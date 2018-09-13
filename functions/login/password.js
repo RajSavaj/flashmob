@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const randomstring = require("randomstring");
 const config = require('../../config/config.json');
-
+var ObjectID = require('mongodb').ObjectID;
 exports.changePassword = (email, password, newPassword) => 
 
 	new Promise((resolve, reject) => {
@@ -141,4 +141,17 @@ exports.resetPasswordFinish = (email, token, password) =>
 
 		.catch(err => reject({ status: 500, message: 'Internal Server Error !'+err.message }));
 
+	});
+
+exports.ChangePass = (uid,pass) => 
+	new Promise((resolve, reject) => {
+		user.find({ _id:ObjectID(uid)})
+		.then(users => {
+			let user = users[0];
+			const salt = bcrypt.genSaltSync(10);
+			const hash = bcrypt.hashSync(pass, salt);
+			user.hashed_password = hash;
+			user.save();
+		    resolve({ status: 200, message: 2 })
+		})
 	});

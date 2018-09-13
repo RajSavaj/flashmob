@@ -107,3 +107,12 @@ exports.FriendReqList=(ouid) =>
             });
         });
 });
+
+exports.RemoveAccount=(uid) =>
+    new Promise((resolve,reject) =>{
+          user.findOneAndRemove({_id:ObjectID(uid)}).then(data=>{
+                frequest.remove({"$or": [{"sid": uid}, {"rid": uid}]}).then(data=>{
+                    resolve({ status: 200, message: [] });
+                });
+          });
+    });

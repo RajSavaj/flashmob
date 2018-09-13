@@ -639,6 +639,33 @@ module.exports = router => {
         }
     });
 
+     router.post('/DeleteAccount',(req,res)=>{
+        const uid  = req.body.uid;
+        if (!uid) {
+            res.status(400).json({ message: 'Invalid Request !' });
+        } else {
+             freq.RemoveAccount(uid)  
+                .then(result => {
+                    res.status(result.status).json(result.message)
+                })
+                .catch(err => res.status(err.status).json({message: err.message}));
+        }
+    });
+
+    router.post('/ChangePass',(req,res)=>{
+        const pass  = req.body.pass;
+        const uid   = req.body.uid;
+        if (!pass || !uid) {
+            res.status(400).json({ message: 'Invalid Request !' });
+        } else {
+            password.ChangePass(uid,pass)
+                .then(result => {
+                    res.status(result.status).json(result.message)
+                })
+                .catch(err => res.status(err.status).json({message: err.message}));
+        }
+    });
+
     function checkToken(req) {
         const token = req.headers['x-access-token'];
 
