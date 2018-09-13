@@ -51,7 +51,9 @@ exports.searchparty=(city,date)=>new Promise((resolve,reject)=>{
 })
 
 exports.getallpartydate=(pdate)=>new Promise((resolve,reject)=>{
-    party.find({pdate:date}, function (err, parties) {
+    var  dt=dateTime.create(pdate);
+    var datec = dt.format('m/d/Y');
+    party.find({pdate:datec}, function (err, parties) {
         resolve({ status: 200, message: parties });
     }); 
 })
